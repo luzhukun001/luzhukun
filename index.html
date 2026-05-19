@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>膳粮人私厨上门服务</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #faf8f5;
+      color: #2c2c2c;
+      line-height: 1.6;
+    }
+    a { color: #c8902e; text-decoration: none; }
+    .hero {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: #f5f0e8;
+      padding: 60px 20px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #c8902e, #e8c87a, #c8902e);
+    }
+    .hero h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: 4px; margin-bottom: 6px; }
+    .hero .subtitle { font-size: 1rem; color: #c8902e; letter-spacing: 6px; margin-bottom: 20px; }
+    .hero .tagline { font-size: 1.05rem; color: #bbb5a8; line-height: 1.7; max-width: 360px; margin: 0 auto; }
+    .hero .tagline span { color: #e8c87a; }
+    .nav {
+      position: sticky; top: 0; z-index: 100; background: #fff; display: flex;
+      overflow-x: auto; border-bottom: 1px solid #eee; -webkit-overflow-scrolling: touch;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav a {
+      flex: 1; min-width: 80px; text-align: center; padding: 14px 8px;
+      font-size: 0.9rem; color: #666; white-space: nowrap;
+      border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    .nav a.active, .nav a:target { color: #c8902e; border-bottom-color: #c8902e; font-weight: 600; }
+    .nav a:active { background: #f5f0e8; }
+    section { padding: 40px 20px; max-width: 640px; margin: 0 auto; }
+    .section-title {
+      font-size: 1.3rem; font-weight: 700; color: #1a1a1a; margin-bottom: 20px;
+      padding-left: 12px; border-left: 3px solid #c8902e;
+    }
+    .about-text { font-size: 0.95rem; color: #555; margin-bottom: 20px; }
+    .about-card {
+      background: #fff; border-radius: 12px; padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 16px;
+    }
+    .about-card h3 { font-size: 1rem; color: #c8902e; margin-bottom: 8px; }
+    .about-card p { font-size: 0.9rem; color: #666; }
+    .price-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .price-table th { background: #1a1a1a; color: #f5f0e8; padding: 12px 10px; text-align: left; font-weight: 600; }
+    .price-table td { padding: 12px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+    .price-table tr:nth-child(even) td { background: #faf8f5; }
+    .price-item { color: #c8902e; font-weight: 700; white-space: nowrap; }
+    .price-rule {
+      background: #fff8ed; border-radius: 10px; padding: 16px; margin-top: 16px;
+      font-size: 0.88rem; color: #555; line-height: 1.8;
+    }
+    .price-rule strong { color: #c8902e; }
+    .menu-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .menu-tag {
+      background: #fff; border: 1px solid #e0d5c8; border-radius: 20px;
+      padding: 6px 16px; font-size: 0.85rem; color: #666;
+    }
+    .menu-tag.highlight { border-color: #c8902e; color: #c8902e; font-weight: 600; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 6px; }
+    .form-group label .optional { font-weight: 400; color: #999; font-size: 0.8rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 8px;
+      font-size: 0.95rem; font-family: inherit; background: #fff; transition: border 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: #c8902e; box-shadow: 0 0 0 3px rgba(200,144,46,0.15);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .btn-submit {
+      width: 100%; padding: 16px; background: linear-gradient(135deg, #c8902e, #b07a20);
+      color: #fff; border: none; border-radius: 10px; font-size: 1.1rem;
+      font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-submit:active { transform: scale(0.98); opacity: 0.9; }
+    .btn-submit:disabled { opacity: 0.6; }
+    .contact-card {
+      background: #fff; border-radius: 12px; padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06); text-align: center;
+    }
+    .contact-card .wechat { font-size: 1.3rem; font-weight: 700; color: #07c160; margin: 10px 0; }
+    .contact-card .hint { font-size: 0.85rem; color: #999; margin-top: 8px; }
+    .contact-card .copy-btn {
+      display: inline-block; margin-top: 10px; padding: 8px 24px;
+      background: #07c160; color: #fff; border: none; border-radius: 20px;
+      font-size: 0.9rem; cursor: pointer;
+    }
+    .contact-card .copy-btn:active { opacity: 0.8; }
+    footer { text-align: center; padding: 30px 20px; font-size: 0.8rem; color: #aaa; }
+    .toast {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.8); color: #fff; padding: 12px 24px;
+      border-radius: 8px; font-size: 0.9rem; z-index: 999;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+      max-width: 90vw; text-align: center;
+    }
+    .toast.show { opacity: 1; }
+    .toast.error { background: rgba(200,50,50,0.9); }
+    @media (max-width: 480px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-row-3 { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<header class="hero">
+  <h1>膳粮人</h1>
+  <div class="subtitle">私厨上门服务</div>
+  <p class="tagline">
+    三十年粤菜功底 · 东莞全市上门<br>
+    <span>把酒楼味道，搬进你家里</span>
+  </p>
+</header>
+
+<nav class="nav">
+  <a href="#about">关于我们</a>
+  <a href="#price">服务价格</a>
+  <a href="#menu">菜品</a>
+  <a href="#book">预约下单</a>
+  <a href="#contact">联系</a>
+</nav>
+
+<section id="about">
+  <h2 class="section-title">关于膳粮人</h2>
+  <p class="about-text">
+    膳粮人私厨上门服务，由东莞东坑卢师傅创立。2019年粤菜厨师比赛东坑镇区荣获第一名金奖，三十年粤菜经验，从选材到出品一手把控。不只是做一顿饭，更是把酒楼级别的用餐体验，搬进你的家里。
+  </p>
+  <div class="about-card">
+    <h3>🍳 我们的服务</h3>
+    <p>· 家宴、聚会、生日宴、商务接待<br>· 粤式私厨上门烹饪<br>· 可选配服务员、保洁员<br>· 可代买食材，省心省力</p>
+  </div>
+  <div class="about-card">
+    <h3>📍 服务范围</h3>
+    <p>东莞市全城（后续拓展深圳、广州、惠州）</p>
+  </div>
+</section>
+
+<section id="price">
+  <h2 class="section-title">服务价格</h2>
+  <table class="price-table">
+    <thead><tr><th>服务项目</th><th>价格</th></tr></thead>
+    <tbody>
+      <tr><td>厨师上门（10人内）</td><td class="price-item">500元</td></tr>
+      <tr><td>服务员</td><td class="price-item">200元起</td></tr>
+      <tr><td>保洁员</td><td class="price-item">200元起</td></tr>
+      <tr><td>代买菜服务</td><td class="price-item">50元</td></tr>
+    </tbody>
+  </table>
+  <div class="price-rule">
+    <strong>📋 计价规则说明</strong><br><br>
+    <strong>• 10人基准：</strong>厨师500元，含10人以内出餐服务。<br>
+    <strong>• 超出10人：</strong>10-12人、菜品不复杂 → 不加收。12人以上，菜品多且复杂 → 每增加2人+2道菜，厨师服务费加收100元。<br>
+    <strong>• 服务员/保洁员：</strong>用餐10人内 → 各200元起。13人用餐或用餐每增加3人 → 每增加1位加收50元。<br>
+    <strong>• 最终价格：</strong>根据实际情况沟通确认。
+  </div>
+</section>
+
+<section id="menu">
+  <h2 class="section-title">菜品展示</h2>
+  <div class="menu-tags">
+    <span class="menu-tag highlight">粤菜为主</span>
+    <span class="menu-tag">波士顿龙虾</span>
+    <span class="menu-tag">东星斑</span>
+    <span class="menu-tag">大连鲜鲍</span>
+    <span class="menu-tag">避风塘炒蟹</span>
+    <span class="menu-tag">清远鸡</span>
+    <span class="menu-tag">炖汤</span>
+  </div>
+
+  <!-- 精选套餐 A~F (内容不变) -->
+  <div class="about-card" style="background:#fff8ed;border:1px solid #e8d5b8;margin-bottom:16px;">
+    <h3>👑 精选A · 约800元左右菜价（价格以时价为准）</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:10px;">（酒楼同等品质2000-2300元 · 厨师服务费另加500元）<br><span style="color:#999;">※ 食材自购或代买，未含服务员/保洁费</span></p>
+    <table class="price-table" style="font-size:0.85rem;">
+      <tr><th style="width:70px;background:#c8902e;">类别</th><th style="background:#c8902e;">菜品</th></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🥗 凉菜</td><td>红油猪耳 · 凉拌海藻</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍵 炖汤</td><td>鹿茸菌炖猪展汤（位上）</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🦞 主菜</td><td>香茅焗罗氏虾 · 潮州老菜脯酱蒸带子<br>黄椒酱盘龙蒸鲟龙鱼 · 黑蒜珍菌炒牛仔粒<br>飘香葱油清远鸡 · 荷叶红枣云耳蒸甲鱼<br>干锅鹿茸菌爆湖南腊肉 · 韩式味淋猪手<br>贝贝瓜面豉蒸排骨 · 上汤板蓝根</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍚 主食</td><td>香煎韭菜饺 · 白米饭</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍉 水果</td><td>精美水果盘</td></tr>
+    </table>
+  </div>
+
+  <div class="about-card" style="background:#fff8ed;border:1px solid #e8d5b8;margin-bottom:16px;">
+    <h3>👑 精选B · 约1000元左右菜价（价格以时价为准）</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:10px;">（酒楼同等品质约2200-2500元 · 厨师服务费另加500元）<br><span style="color:#999;">※ 食材自购或代买，未含服务员/保洁费</span></p>
+    <table class="price-table" style="font-size:0.85rem;">
+      <tr><th style="width:70px;background:#c8902e;">类别</th><th style="background:#c8902e;">菜品</th></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🥗 凉菜</td><td>凉拌杏鲍菇 · 凉拌海蜇</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍵 炖汤</td><td>牛蒡炖肉汁汤（位上）</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🦞 主菜</td><td>薄荷蚕豆煎焗九节虾球 · 潮州老菜脯蒸海斑<br>老陈皮蒸大连鲜鲍（8头10只） · 石板沙姜焗八爪鱼<br>黑蒜珍菌焗西冷牛仔粒 · 蒜茸粉丝蒸带子<br>五指毛桃盐焗清远鸡 · 鲜藕尖炒猪颈肉<br>荷塘清爽 · 上汤南瓜花</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍚 主食</td><td>核桃包 · 白米饭</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍉 水果</td><td>精美水果（位上）</td></tr>
+    </table>
+  </div>
+
+  <div class="about-card" style="background:#fff8ed;border:1px solid #e8d5b8;margin-bottom:16px;">
+    <h3>👑 精选C · 约1500元左右菜价（价格以时价为准）</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:10px;">（酒楼同等品质约3300-3600元 · 厨师服务费另加500元）<br><span style="color:#999;">※ 食材自购或代买，未含服务员/保洁费</span></p>
+    <table class="price-table" style="font-size:0.85rem;">
+      <tr><th style="width:70px;background:#c8902e;">类别</th><th style="background:#c8902e;">菜品</th></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🥗 凉菜</td><td>凉拌杏鲍菇 · 麻辣牛展</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍵 炖汤</td><td>姬枞菌炖肉汁汤（位上）</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🦞 主菜</td><td>三葱汁焗小青龙（3只） · 果皮蒸石斑鱼<br>姜豉红蟹蒸肉饼 · 蒜茸粉丝蒸元贝<br>黑椒香煎安格斯牛肉 · 客家飘香葱油鸡<br>胜瓜杂菌姜蛋煮沙白 · 砂锅味淋猪手<br>樱花虾炒山药 · 上汤南瓜花</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍚 主食</td><td>小米糕 · 白米饭</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍉 水果</td><td>精美水果盘</td></tr>
+    </table>
+  </div>
+
+  <div class="about-card" style="background:#fff8ed;border:1px solid #e8d5b8;margin-bottom:16px;">
+    <h3>👑 精选D · 约1800元左右菜价（价格以时价为准）</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:10px;">（酒楼同等品质约3800-4300元 · 厨师服务费另加500元）<br><span style="color:#999;">※ 食材自购或代买，未含服务员/保洁费</span></p>
+    <table class="price-table" style="font-size:0.85rem;">
+      <tr><th style="width:70px;background:#c8902e;">类别</th><th style="background:#c8902e;">菜品</th></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🥗 凉菜</td><td>川味青麻椒红鱿筒 · 凉拌杏鲍菇</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍵 炖汤</td><td>石斛洋参炖肉汁汤（位上）</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🦞 主菜</td><td>避风塘炒或辣炒波士顿龙虾 · XO酱爆大连鲜鲍片<br>黄椒酱游龙蒸东星斑 · 盐焗花螺<br>酸汤浸肥牛 · 客家盐焗清远鸡<br>砂锅香茅焗圣子王 · 韩式味淋猪手<br>干锅鹿茸菌爆湖南腊肉 · 生炒白菜心</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍚 主食</td><td>蒸生肉包子 · 白米饭</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍉 水果</td><td>精美水果盘</td></tr>
+    </table>
+  </div>
+
+  <div class="about-card" style="background:#fff8ed;border:1px solid #e8d5b8;margin-bottom:16px;">
+    <h3>👑 精选E · 约2000元左右菜价（价格以时价为准）</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:10px;">（酒楼同等品质约4300-4600元 · 厨师服务费另加500元）<br><span style="color:#999;">※ 食材自购或代买，未含服务员/保洁费</span></p>
+    <table class="price-table" style="font-size:0.85rem;">
+      <tr><th style="width:70px;background:#c8902e;">类别</th><th style="background:#c8902e;">菜品</th></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🥗 凉菜</td><td>蓝莓山药 · 意大利黑醋松板肉 · 凉拌木耳</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍵 炖汤</td><td>雪利干无花果炖肉汁汤（位上）</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🦞 主菜</td><td>芝士伊面焗澳龙 · 游龙黄椒酱东星斑<br>牛肝菌茴香煎牛仔粒 · 砂锅黑椒焗脆鳝球<br>香茅砂锅焗大连鲜鲍 · 清补凉甲鱼浸生蚝<br>客家盐焗鸡 · XO酱芦笋百花羊肚菌<br>紫苏子姜焖青头鸭 · 椒腐生菜</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍚 主食</td><td>核桃包 · 海鲜汤饭</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍉 水果</td><td>精美水果盘</td></tr>
+    </table>
+  </div>
+
+  <div class="about-card" style="background:#fff8ed;border:1px solid #e8d5b8;">
+    <h3>👑 精选F · 约2600元左右菜价（价格以时价为准）</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:10px;">（酒楼同等品质约5800-6000元 · 厨师服务费另加500元）<br><span style="color:#999;">※ 食材自购或代买，未含服务员/保洁费</span></p>
+    <table class="price-table" style="font-size:0.85rem;">
+      <tr><th style="width:70px;background:#c8902e;">类别</th><th style="background:#c8902e;">菜品</th></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🥗 凉菜</td><td>皮冻赛鲍 · 盐水毛豆 · 爽口海藻</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍵 炖汤</td><td>枇杷花黑枸杞炖老鸡汤（位上）</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🦞 主菜</td><td>阿拉斯加蟹三食（避风塘蟹身、黄椒酱蒸蟹脚、蟹膏虾汤蒸水蛋）<br>游龙潮洲老菜脯酱蒸东星斑 · 砂锅黑松露焗大连鲜鲍<br>美极罗氏虾 · XO酱海螺片<br>松茸菌煎焗雪花牛仔粒 · 砂锅古法焖黑宗鹅<br>露笋炒黑姬枞菌 · 上汤板蓝根</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍚 主食</td><td>香煎本地裹蒸粽</td></tr>
+      <tr><td style="font-weight:600;color:#c8902e;">🍉 水果</td><td>精美水果盘</td></tr>
+    </table>
+  </div>
+
+  <p class="about-text" style="font-size:0.88rem;color:#999;margin-top:12px;">
+    📸 菜单持续更新中。以上菜金均为食材费用估算，厨师服务费另计。
+  </p>
+</section>
+
+<section id="book">
+  <h2 class="section-title">预约下单</h2>
+  <form id="bookingForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">姓名</label>
+        <input type="text" id="name" required placeholder="您的称呼">
+      </div>
+      <div class="form-group">
+        <label for="phone">手机号</label>
+        <input type="tel" id="phone" required placeholder="用于联系确认">
+      </div>
+    </div>
+    <div class="form-row form-row-3">
+      <div class="form-group">
+        <label for="people">用餐人数</label>
+        <input type="number" id="people" min="1" required placeholder="约几位">
+      </div>
+      <div class="form-group">
+        <label for="date">日期</label>
+        <input type="date" id="date" required>
+      </div>
+      <div class="form-group">
+        <label for="time">时间</label>
+        <input type="time" id="time" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="address">地址</label>
+      <input type="text" id="address" required placeholder="详细地址（东莞市内）">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="needBuy">代买菜</label>
+        <select id="needBuy">
+          <option value="no">不需要</option>
+          <option value="yes">需要（+50元）</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="needServer">服务员</label>
+        <select id="needServer">
+          <option value="0">不需要</option>
+          <option value="1">1位（200元）</option>
+          <option value="2">2位（400元）</option>
+          <option value="3">3位（600元）</option>
+          <option value="4">4位以上（沟通议价）</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="needCleaner">保洁员</label>
+        <select id="needCleaner">
+          <option value="0">不需要</option>
+          <option value="1">1位（200元）</option>
+          <option value="2">2位（400元）</option>
+          <option value="3">3位（600元）</option>
+          <option value="4">4位以上（沟通议价）</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="budget">预算 <span class="optional">(选填)</span></label>
+        <input type="text" id="budget" placeholder="大致预算范围">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="note">备注 <span class="optional">(口味偏好、忌口、选哪个套餐等)</span></label>
+      <textarea id="note" placeholder="比如：想选哪个套餐、有什么忌口的、有什么特殊要求..."></textarea>
+    </div>
+    <button type="submit" class="btn-submit" id="submitBtn">提交预约</button>
+    <p style="font-size:0.8rem;color:#999;text-align:center;margin-top:10px;">
+      提交后卢师傅会通过微信与你联系确认
+    </p>
+  </form>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">联系我</h2>
+  <div class="contact-card">
+    <p style="color:#666;font-size:0.9rem;">添加微信，直接沟通</p>
+    <div class="wechat" id="wechatDisplay">luzhukun001</div>
+    <button class="copy-btn" onclick="copyWechat()">📋 复制微信号</button>
+    <div class="hint">加微信时请备注"膳粮人私厨"</div>
+  </div>
+</section>
+
+<footer>
+  膳粮人私厨上门服务 &copy; 2026<br>
+  东莞 · 用心做好每一餐
+</footer>
+
+<script>
+function copyWechat() {
+  const text = 'luzhukun001';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => showToast('微信号已复制 ✅'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('微信号已复制 ✅');
+  }
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// 预约表单提交
+document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = '提交中...';
+  btn.disabled = true;
+
+  const data = {
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    people: document.getElementById('people').value,
+    date: document.getElementById('date').value,
+    time: document.getElementById('time').value,
+    address: document.getElementById('address').value,
+    needBuy: document.getElementById('needBuy').value,
+    needServer: document.getElementById('needServer').value,
+    needCleaner: document.getElementById('needCleaner').value,
+    budget: document.getElementById('budget').value,
+    note: document.getElementById('note').value
+  };
+
+  try {
+    // 向后端 API 提交（Vercel 上自动转到 /api/book）
+    const resp = await fetch('/api/book', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await resp.json();
+    showToast(result.message || '✅ 预约提交成功！');
+    this.reset();
+    document.getElementById('date').valueAsDate = new Date();
+  } catch (err) {
+    console.error('提交失败:', err);
+    showToast('⚠️ 网络问题，请直接加微信 luzhukun001 联系', true);
+  }
+
+  btn.textContent = '提交预约';
+  btn.disabled = false;
+});
+
+// 设置默认日期
+document.getElementById('date').valueAsDate = new Date();
+document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+// 导航高亮
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav a');
+function updateNav() {
+  let current = '';
+  sections.forEach(s => {
+    const top = s.offsetTop - 80;
+    if (window.scrollY >= top) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateNav);
+updateNav();
+</script>
+</body>
+</html>
