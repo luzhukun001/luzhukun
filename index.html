@@ -412,19 +412,11 @@ document.getElementById('bookingForm').addEventListener('submit', async function
   };
 
   try {
-    // 向后端 API 提交（Vercel 上自动转到 /api/book）
-    const resp = await fetch('/api/book', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    const result = await resp.json();
-    showToast(result.message || '✅ 预约提交成功！');
+    showToast('✅ 预约信息已收到！请加微信 luzhukun001 联系确认');
     this.reset();
     document.getElementById('date').valueAsDate = new Date();
   } catch (err) {
-    console.error('提交失败:', err);
-    showToast('⚠️ 网络问题，请直接加微信 luzhukun001 联系', true);
+    showToast('⚠️ 请直接加微信 luzhukun001 联系', true);
   }
 
   btn.textContent = '提交预约';
